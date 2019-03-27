@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title>Insert title here</title>
+
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+
+		<style type="text/css">
+			body,
+			html,
+			#allmap {
+				width: 100%;
+				height: 100%;
+				overflow: hidden;
+				margin: 0;
+				font-family: "微软雅黑";
+			}
+		</style>
+		<script type="text/javascript">
+			window.onload = function() {
+				var loc = location.href;
+				var url = loc.split("url=")[1];
+				var reurl="http://192.168.1.118:33200/Location/wuxiMap/quanjing/jq/"+url+"/html/index.html"
+				document.getElementById("MyDiv").innerHTML = '<iframe style="width:100%;height:100%;" src="' + reurl + '"></iframe>';
+			}
+		</script>
+		<script src="js/mui.min.js"></script>
+		<script>
+			mui.init();
+
+			function plusReady() {
+				 plus.screen.unlockOrientation();
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+		</script>
+
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-transparent">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+		</header>
+		
+
+		<div id="MyDiv" style="width: 100%;height: 100%"></div>
+
+	</body>
+
+</html>

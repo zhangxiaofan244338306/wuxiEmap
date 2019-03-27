@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #03A9F4;
+				font-size: 15px;
+				font-weight: 550;
+			}
+			
+			.fenxi {
+				margin: 20px 15px 10px;
+				color: #03A9F4;
+				font-size: 15px;
+				font-weight: 550;
+			}
+			
+			.fieldName {
+				font-size: 12px;
+				margin-top: 0;
+				margin-bottom: 10px;
+				color: #8f8f94;
+				font-weight: 600;
+			}
+			
+			.fieldValue {
+				font-size: 12px;
+				margin-top: 0;
+				margin-bottom: 10px;
+				color: black;
+			}
+			
+			.mui-bar {
+				position: fixed;
+				z-index: 10;
+				right: 0;
+				left: 0;
+				height: 44px;
+				padding-right: 10px;
+				padding-left: 10px;
+				border-bottom: 0;
+				background-color: #00AEEF;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				-webkit-backloadInitface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+			
+			a {
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body onload="initDetail()">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" style="color: white;">地块详情</h1>
+		</header>
+		<div class="mui-content">
+			<div class="title">
+				区域液态价值与需求分析 》
+			</div>
+			<p style="width: calc(100% - 40px);margin-left: 20px;" id="analyse">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;该地块位于市中心西区，该片区是近年来锡城中心城区城中村改造的重点区域,也是古运河风光带（运河湾文化景观长廊、生态旅游长廊和高端服务业长廊）的核心区之一。区域内交通便捷、环境优美，各类配套十分完善，该地块的开发建设，将快速弥补该区域高端城市综合体奇缺的空白，机具开发前景！</p>
+			<div class="title">
+				地块指标 》
+			</div>
+			<div style="width: calc(100% - 40px);margin-left: 20px;">
+				<table>
+					<tr>
+						<td><label class="fieldName">地块名称：</label></td>
+						<td>
+							<label class="fieldValue" id="name"></label>
+						</td>
+					</tr>
+					<tr>
+						<td><label class="fieldName">地块位置：</label></td>
+						<td>
+							<label class="fieldValue" id="address"></label>
+						</td>
+					</tr>
+					<tr>
+						<td><label class="fieldName">面积（㎡）：</label></td>
+						<td>
+							<label class="fieldValue" id="areas"></label>
+						</td>
+					</tr>
+					<tr>
+						<td><label class="fieldName">容积率（≤）：</label></td>
+						<td>
+							<label class="fieldValue" id="plotratio"></label>
+						</td>
+					</tr>
+					<tr>
+						<td><label class="fieldName">建筑密度（≤）：</label></td>
+						<td>
+							<label class="fieldValue" id="density"></label>
+						</td>
+					</tr>
+					<tr>
+						<td><label class="fieldName" >绿地率（≥）：</label></td>
+						<td>
+							<label class="fieldValue" id="greeningrate"></label>
+						</td>
+					</tr>
+					<tr>
+						<td><label class="fieldName">规划用途：</label></td>
+						<td>
+							<label class="fieldValue" id="use"></label>
+						</td>
+					</tr>
+				</table>
+			</div>
+			<div class="title">
+				周边配套价值分析 》
+			</div>
+			<p style="width: calc(100% - 40px);margin-left: 20px;">
+				<label class="fieldName">交通配套：</label><label class="fieldValue" id="traffic"></label>
+			</p>
+			<p style="width: calc(100% - 40px);margin-left: 20px;">
+				<label class="fieldName">公建配套：</label><label class="fieldValue" id="surname"></label>
+			</p>
+			<p style="width: calc(100% - 40px);margin-left: 20px;">
+				<label class="fieldName">教育配套：</label><label class="fieldValue" id="education"></label>
+			</p>
+
+			<div class="title">
+				地块位置 》
+			</div>
+			<div id="diTu">
+				
+			</div>
+
+		</div>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+	<script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+		function initDetail() {
+			
+			var dkObjId = getQueryString("dkObjId");
+			var lhtml='';
+			lhtml += '<iframe width="100%" height="300" src="plotMap.html?dkObjId='+dkObjId;
+			lhtml += '"></iframe>'
+				$("#diTu").append(lhtml);
+			$.getJSON('dikuai.json', function(data) {
+				for(var i = 0; i < data.dikuai.length; i++) {
+					if(data.dikuai[i].id==dkObjId){
+						document.getElementById("name").innerHTML=data.dikuai[i].name;
+						document.getElementById("address").innerHTML=data.dikuai[i].address;
+						document.getElementById("areas").innerHTML=data.dikuai[i].areas;
+						document.getElementById("plotratio").innerHTML=data.dikuai[i].plotratio;
+						document.getElementById("density").innerHTML=data.dikuai[i].density;
+						document.getElementById("greeningrate").innerHTML=data.dikuai[i].greeningrate;
+						document.getElementById("use").innerHTML=data.dikuai[i].use;
+						document.getElementById("analyse").innerHTML=data.dikuai[i].analyse;
+						document.getElementById("traffic").innerHTML=data.dikuai[i].traffic;
+						document.getElementById("surname").innerHTML=data.dikuai[i].surname;
+						document.getElementById("education").innerHTML=data.dikuai[i].education;
+						return;					}
+					
+				}
+				
+			});
+		}
+
+		function getQueryString(paras) {
+			var url = location.href;
+			var paraString = url.substring(url.indexOf("?") + 1, url.length).split("&");
+			var paraObj = {}
+			for(i = 0; j = paraString[i]; i++) {
+				paraObj[j.substring(0, j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=") + 1, j.length);
+			}
+			var returnValue = paraObj[paras.toLowerCase()];
+			if(typeof(returnValue) == "undefined") {} else {
+				return returnValue;
+			}
+		}
+	</script>
+
+</html>

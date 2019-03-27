@@ -1,0 +1,24 @@
+[
+	{
+		"x":290,
+		"y":80,
+		"width":77,
+		"height":55,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=jsxzwh"
+			}
+	},
+	{
+		"x":290,
+		"y":160,
+		"width":77,
+		"height":45,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=jybjys"
+			}
+	}
+]

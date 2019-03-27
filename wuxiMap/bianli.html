@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				font-family: "微软雅黑";
+			}
+			
+			#allmap {
+				height: 400px;
+				width: 100%;
+			}
+			
+			#control {
+				width: 100%;
+			}
+		</style>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WRopnGH4E03iFrqyXoDrbrGHwCoIuYeu"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+		<title>设置线、面可编辑</title>
+		<style type="text/css">
+			img[src*="copyright_logo_hd"] {
+				display: none;
+			}
+			
+			.BMap_cpyCtrl {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div></div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	mui.init();
+
+	function initMap() {
+		var dkObjId = "2"
+
+		$.getJSON('dikuai1.json', function(data) {
+				for(var i = 0; i < data.dikuai1.length; i++) {
+					if(data.dikuai[i].id == dkObjId) {
+
+						var textlabel = (data.dikuai1[i].textlabel[0].lpoint.split(',')[0]),
+							parseFloat(data.dikuai1[i].textlabel[0].center.split(',')[1])) + data.dikuai1[i].textlabel[0].lname);
+
+			}
+
+		}
+	});
+	}
+</script>

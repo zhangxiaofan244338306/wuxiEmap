@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			.title {
+				margin: 20px 15px 10px;
+				color: #6d6d72;
+				font-size: 15px;
+			}
+			
+			.mui-bar {
+				position: fixed;
+				z-index: 10;
+				right: 0;
+				left: 0;
+				height: 44px;
+				padding-right: 10px;
+				padding-left: 10px;
+				border-bottom: 0;
+				background-color: #00AEEF;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				-webkit-backloadInitface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+			
+			a {
+				color: white;
+			}
+		</style>
+	</head>
+
+	<body onload="initList()">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-left-nav mui-pull-left"></a>
+			<h1 class="mui-title" style="color: white;">地块推荐</h1>
+		</header>
+		<div class="mui-content">
+			<div class="title">
+				精品地块
+			</div>
+			<div id="plotList">
+
+			</div>
+		</div>
+
+	</body>
+	<script src="js/mui.min.js"></script>
+	<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+	<script>
+		mui.init({
+			swipeBack: true //启用右滑关闭功能
+		});
+
+		function initList() {
+			var _html = '';
+			_html += '<ul class="mui-table-view mui-table-view-chevron">';
+			$.getJSON('dikuai.json', function(data) {
+				for(var i = 0; i < data.dikuai.length; i++) {
+					var name = data.dikuai[i].name;
+					var analyse = data.dikuai[i].analyse;
+					_html += '<li class="mui-table-view-cell mui-media">	<a class="mui-navigate-right" href="plotDetail.html?dkObjId='+data.dikuai[i].id;
+					_html += '"> <div class="mui-media-body">';
+					_html += name;
+					_html += '<p class="mui-ellipsis">';
+					_html += analyse;
+					_html += '</p> </div> </a> </li>'
+				}
+				_html += '</ul>';
+				$("#plotList").append(_html);
+			});
+		}
+	</script>
+
+</html>

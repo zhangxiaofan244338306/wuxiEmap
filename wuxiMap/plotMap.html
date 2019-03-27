@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				font-family: "微软雅黑";
+			}
+			
+			#allmap {
+				height: 400px;
+				width: 100%;
+			}
+			
+			#control {
+				width: 100%;
+			}
+		</style>
+		<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=WRopnGH4E03iFrqyXoDrbrGHwCoIuYeu"></script>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+		<title>设置线、面可编辑</title>
+		<style type="text/css">
+			img[src*="copyright_logo_hd"] {
+				display: none;
+			}
+			
+			.BMap_cpyCtrl {
+				display: none;
+			}
+		</style>
+	</head>
+
+	<body onload="initMap()">
+		<div id="allmap"></div>
+	</body>
+
+</html>
+<script type="text/javascript">
+	function initMap() {
+		var dkObjId = getQueryString("dkObjId");
+		$.getJSON('dikuai.json', function(data) {
+			for(var i = 0; i < data.dikuai.length; i++) {
+				if(data.dikuai[i].id == dkObjId) {
+					var map = new BMap.Map("allmap", {
+						mapType: BMAP_HYBRID_MAP
+					});
+					var centerP = new BMap.Point(parseFloat(data.dikuai[i].posion[0].center.split(',')[0]), parseFloat(data.dikuai[i].posion[0].center.split(',')[1]));
+					map.centerAndZoom(centerP, 13);
+					map.enableScrollWheelZoom();
+					map.addControl(new BMap.NavigationControl());
+					var points = data.dikuai[i].posion[0].points;
+					var pArr = new Array();
+					for(var j = 0; j < points.length; j++) {
+						var pointd = new BMap.Point(parseFloat(points[j].split(',')[0]), parseFloat(points[j].split(',')[1]));
+						pArr.push(pointd);
+					}
+					var polygon = new BMap.Polygon(pArr, {
+						strokeColor: "red",
+						strokeWeight: 2,
+						strokeOpacity: 0.3,
+						fillColor: "red",
+						fillOpacity: 0.3
+					}); //创建多边形
+					map.addOverlay(polygon);
+
+				}
+
+				var textlabels = data.dikuai[i].textlabel;
+				for(var k = 0; k < textlabels.length; k++) {
+					var lpoints = new BMap.Point(parseFloat(textlabels[k].lpoint.split(",")[0]), parseFloat(textlabels[k].lpoint.split(",")[1]));
+					var lname = textlabels[k].lname;
+					var opts = {
+						position: lpoints, // 指定文本标注所在的地理位置
+						offset: new BMap.Size(30, -30) //设置文本偏移量
+					}
+					var label = new BMap.Label(lname, opts); // 创建文本标注对象
+					label.setStyle({
+						color: "white",
+						backgroundColor: "red",
+						fontSize: "15px",
+						height: "auto",
+						width: "auto",
+						lineHeight: "20px",
+						borderRadius: "5px",
+						fontWeight: "bold",
+						textAlign: "center",
+						fontFamily: "宋体"
+					});
+					map.addOverlay(label);
+				}
+
+				return;
+			}
+
+		});
+	}
+
+	function getQueryString(paras) {
+		var url = location.href;
+		var paraString = url.substring(url.indexOf("?") + 1, url.length).split("&");
+		var paraObj = {}
+		for(i = 0; j = paraString[i]; i++) {
+			paraObj[j.substring(0, j.indexOf("=")).toLowerCase()] = j.substring(j.indexOf("=") + 1, j.length);
+		}
+		var returnValue = paraObj[paras.toLowerCase()];
+		if(typeof(returnValue) == "undefined") {} else {
+			return returnValue;
+		}
+	}
+</script>

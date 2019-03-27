@@ -1,0 +1,23 @@
+{
+  "index.html": {
+    "href": "index.html",
+    "resources": [
+      "js/jquery.min.1.7.js",
+      "js/jquery-ui-1.8.20.custom.min.js",
+      "js/modernizr.2.5.3.min.js",
+      "js/hash.js",
+      "js/mui.min.js",
+      "css/mui.min.css",
+      "css/jquery.ui.html4.css",
+      "css/magazine.css",
+      "css/jquery.ui.css",
+      "js/zoom.min.js",
+      "js/turn.html4.min.js",
+      "js/turn.min.js",
+      "js/magazine.js",
+      "pages/preview.jpg"
+    ],
+    "refer": [],
+    "priority": 0
+  }
+}

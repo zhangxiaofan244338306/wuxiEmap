@@ -1,0 +1,57 @@
+[
+	{
+		"x":325,
+		"y":65,
+		"width":95,
+		"height":65,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=xhmsq"
+			}
+	},
+	{
+		"x":260,
+		"y":150,
+		"width":90,
+		"height":60,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=cas"
+			}
+	},
+	{
+		"x":320,
+		"y":220,
+		"width":100,
+		"height":70,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=xfcgj"
+			}
+	},
+	{
+		"x":320,
+		"y":410,
+		"width":100,
+		"height":60,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=ncs"
+			}
+	},
+	{
+		"x":265,
+		"y":500,
+		"width":100,
+		"height":65,
+		"class":"link",
+		"data":
+			{
+				"url": "view1.html?url=qmqgyh"
+			}
+	}
+]

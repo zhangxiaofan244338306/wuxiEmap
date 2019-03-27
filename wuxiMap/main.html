@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+
+		<!--标准mui.css-->
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style>
+			
+			
+			.buttonSize {
+				width: 75%;
+			}
+			
+			.imgSelect {
+				background-color: #9DC1E3;
+			}
+		</style>
+	</head>
+
+	<body>
+
+		<div id="slider" class="mui-slider">
+			<div class="mui-slider-group mui-slider-loop">
+				<!-- 额外增加的一个节点(循环轮播：第一个节点是最后一张轮播) -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="img/lunbo/4.jpg" class="imgSize">
+					</a>
+				</div>
+				<!-- 第一张 -->
+				<div class="mui-slider-item">
+					<a href="plot.html">
+						<img src="img/lunbo/1.jpg" class="imgSize">
+					</a>
+				</div>
+				<!-- 第二张 -->
+				<div class="mui-slider-item">
+					<a href="pad and phone.html">
+						<img src="img/lunbo/2.jpg" class="imgSize">
+					</a>
+				</div>
+				<!-- 第三张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img src="img/lunbo/3.jpg" class="imgSize">
+					</a>
+				</div>
+				<!-- 第四张 -->
+				<div class="mui-slider-item">
+					<a href="#">
+						<img src="img/lunbo/4.jpg" class="imgSize">
+					</a>
+				</div>
+				<!-- 额外增加的一个节点(循环轮播：最后一个节点是第一张轮播) -->
+				<div class="mui-slider-item mui-slider-item-duplicate">
+					<a href="#">
+						<img src="img/lunbo/1.jpg" class="imgSize">
+					</a>
+				</div>
+			</div>
+			<div class="mui-slider-indicator">
+				<div class="mui-indicator mui-active"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+				<div class="mui-indicator"></div>
+			</div>
+		</div>
+		<div>
+			<div>
+				<div style="width: 33%;height: 120px;margin-top:30px;left: 0px;position: absolute; " align="center" id="">
+					<img src="img/main/jingqu.png" id="jingqu" class="buttonSize" />
+				</div>
+				<div style="width: 33%;height: 120px;margin-top:30px;left: 33.3%;position: absolute; " align="center" id="">
+					<img src="img/main/kaifaqu.png" id="kaifaqu" class="buttonSize" />
+				</div>
+				<div style="width: 33%;height: 120px;margin-top:30px;left: 66.6%;position: absolute;" align="center" id="">
+					<img src="img/main/xutu.png" id="xutu" class="buttonSize" />
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js"></script>
+		<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+		<script type="text/javascript" charset="utf-8">
+			mui.init({
+				swipeBack: true //启用右滑关闭功能
+			});
+			mui.plusReady(function() {
+				plus.screen.lockOrientation('portrait');
+	
+			});
+			var slider = mui("#slider");
+			slider.slider({
+				interval: 4000
+			});
+
+			document.getElementById('jingqu').addEventListener('tap', function() {
+				$("div img").removeClass("imgSelect");
+				$(this).addClass("imgSelect");
+				window.location ="jqMap.html";
+			});
+			document.getElementById('kaifaqu').addEventListener('tap', function() {
+				$("div img").removeClass("imgSelect");
+				$(this).addClass("imgSelect");
+				window.location ="kfqMap.html";
+			});
+			document.getElementById('xutu').addEventListener('tap', function() {
+				$("div img").removeClass("imgSelect");
+				$(this).addClass("imgSelect");
+				window.location ="index.html";
+			});
+			
+				/**
+			 * 重写mui.back()，一秒内连续点击两次，退出应用，仅安卓有效；
+			 */
+			var first = null;
+			mui.back = function() {
+				if(!first) {
+					first = new Date().getTime();
+					/**
+					 * 自动消失提示信息
+					 * http://www.html5plus.org/doc/zh_cn/nativeui.html#plus.nativeUI.toast
+					 */
+					plus.nativeUI.toast("再按一次退出应用");
+					setTimeout(function() {
+						first = null;
+					}, 1000);
+				} else {
+					if(new Date().getTime() - first < 1000) {
+						/**
+						 * 退出应用，仅安卓有效；
+						 * http://www.html5plus.org/doc/zh_cn/runtime.html#plus.runtime.quit
+						 */
+						plus.runtime.quit();
+					}
+				}
+			};
+		</script>
+	</body>
+
+</html>

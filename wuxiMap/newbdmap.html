@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/select.css">
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				font-family: "微软雅黑";
+			}
+			
+			#allmap {
+				height: 100%;
+				width: 100%;
+				overflow: hidden;
+			}
+			
+			.BMapLib_SearchInfoWindow .BMapLib_sendToPhone {
+				display: none;
+			}
+			
+			img[src*="copyright_logo_hd"] {
+				display: none;
+			}
+			
+			.BMap_cpyCtrl {
+				display: none;
+			}
+			
+			p {
+				text-indent: 22px;
+			}
+			
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			
+			.mui-off-canvas-right {
+				color: #fff;
+			}
+			
+			.title {
+				margin: 35px 15px 10px;
+			}
+			
+			.title.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			
+			input {
+				color: #000;
+			}
+			
+			.tangram-suggestion-main {
+				z-index: 2 !important;
+				height: calc(100% - 60px);
+				overflow: auto;
+			}
+			
+			.BMap_noprint anchorTR {
+				z-index: 2000 !important;
+			}
+			
+			.mui-off-canvas-right {
+				position: absolute;
+				z-index: -1;
+				top: 0;
+				bottom: 0;
+				visibility: hidden;
+				box-sizing: content-box;
+				width: 60%;
+				min-height: 100%;
+			}
+			
+			.mui-bar {
+				position: fixed;
+				z-index: 10;
+				right: 0;
+				left: 0;
+				height: 44px;
+				padding-right: 10px;
+				padding-left: 10px;
+				border-bottom: 0;
+				background-color: #00AEEF;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				-webkit-backface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+			a {
+				color: white;
+			}
+		</style>
+		<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=WRopnGH4E03iFrqyXoDrbrGHwCoIuYeu&services=&t=20170517145936"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+		<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+		<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+		<script type="text/javascript" src="js/MarkerClusterer_min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/wuxmap.js"></script>
+		<title>wuxi</title>
+	</head>
+
+	<body onload="loadInit()">
+		<!--侧滑菜单容器-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+			<!--菜单部分-->
+			<aside id="offCanvasSide" class="mui-off-canvas-right">
+				<div id="offCanvasSideScroll" class="mui-scroll-wrapper">
+					<div class="mui-scroll">
+						<div id="r-result" class="mui-input-row mui-search" style="margin-top: 20px;margin-left: 10px;width: calc(100% - 20px);"><input type="search" class="mui-input-clear" placeholder="" id="suggestId" /></div>
+						<h5 class="mui-content-padded">图层选择</h5>
+						<!--
+						<div class="mui-input-row mui-radio mui-left">
+							<label>矢量地图</label>
+							<input name="qjLayer" type="radio" value="shiliang" checked>
+						</div>
+						<div class="mui-input-row mui-radio mui-left">
+							<label>卫星地图</label>
+							<input name="qjLayer" type="radio" value="weixing">
+						</div>
+						-->
+						<div class="mui-input-row mui-checkbox mui-left">
+							<label>旅游景点</label>
+							<input name="qjLayer" value="jingqu" type="checkbox" checked="checked">
+						</div>
+						<div class="mui-input-row mui-checkbox mui-left">
+							<label>开发园区</label>
+							<input name="qjLayer" value="kaifaqu" type="checkbox">
+						</div>
+
+						<div class="content">
+							<div class="select">
+								<p id="xzqh">行政区划</p>
+								<ul>
+									<li data-value="无锡市" class="selected" id="list_wx">无锡市</li>
+									<li data-value="无锡市江阴市" id="list_jy">无锡市江阴市</li>
+									<li data-value="无锡市江阴市" id="list_yx">无锡市宜兴市</li>
+									<li data-value="无锡市锡山区" id="list_xs">无锡市锡山区</li>
+									<li data-value="无锡市惠山区" id="list_hs">无锡市惠山区</li>
+									<li data-value="无锡市滨湖区" id="list_bh">无锡市滨湖区</li>
+									<li data-value="无锡市梁溪区" id="list_lx">无锡市梁溪区</li>
+									<li data-value="无锡市新吴区" id="list_xw">无锡市新吴区</li>
+								</ul>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</aside>
+
+			<div class="mui-inner-wrap">
+				<header class="mui-bar mui-bar-nav">
+					<a class="mui-action-back mui-icon mui-icon-back mui-pull-left"></a>
+					<a id="offCanvasBtn" href="#offCanvasSide" class="mui-icon mui-action-menu mui-icon-bars mui-pull-right"></a>
+					<h1 class="mui-title" style="color: white;">无锡城市地图</h1>
+				</header>
+				<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+
+					<div id="allmap"></div>
+
+				</div>
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+
+		<script type="text/javascript">
+			mui.init({
+				swipeBack: false,
+			});
+			//侧滑容器父节点
+			var offCanvasWrapper = mui('#offCanvasWrapper');
+			//主界面容器
+			var offCanvasInner = offCanvasWrapper[0].querySelector('.mui-inner-wrap');
+			//菜单容器
+			var offCanvasSide = document.getElementById("offCanvasSide");
+
+			//			document.getElementById('offCanvasShow').addEventListener('tap', function() {
+			//				offCanvasWrapper.offCanvas('show');
+			//			});
+
+			//主界面和侧滑菜单界面均支持区域滚动；
+			mui('#offCanvasSideScroll').scroll();
+			mui('#offCanvasContentScroll').scroll();
+			//实现ios平台的侧滑关闭页面；
+			if(mui.os.plus && mui.os.ios) {
+				offCanvasWrapper[0].addEventListener('shown', function(e) { //菜单显示完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'none'
+					});
+				});
+				offCanvasWrapper[0].addEventListener('hidden', function(e) { //菜单关闭完成事件
+					plus.webview.currentWebview().setStyle({
+						'popGesture': 'close'
+					});
+				});
+			}
+			var viewsMarkers = [];
+			var viewMarkerClusterer = null;
+			var kaifaquMarkers = [];
+			var kaifaquMarkerClusterer = null;
+			var opts = null;
+			//底图模式
+			var mapMode = 'shiliang';
+			//景区选中
+			var isJqSelected = true;
+			//开发区选中
+			var isKfqSelected = false;
+			//行政区划
+			var xzqhBoundary = "无锡市";
+			// 百度地图API功能
+			var map;
+			initMap();
+
+			$(function() {
+				$("input[name=qjLayer]").click(function() {
+					if($(this).val() == 'shiliang') {
+						mapMode = 'shiliang';
+					} else if($(this).val() == 'weixing') {
+						mapMode = 'weixing';
+					} else if($(this).val() == 'jingqu') {
+						if(this.checked) {
+							isJqSelected = true;
+						} else {
+							isJqSelected = false;
+						}
+					} else if($(this).val() == 'kaifaqu') {
+						if(this.checked) {
+							isKfqSelected = true;
+						} else {
+							isKfqSelected = false;
+						}
+					}
+					initMap();
+				});
+			});
+
+			function plusReady() {
+				// 设置竖屏
+				plus.screen.lockOrientation('portrait');
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+		</script>
+	</body>
+
+</html>

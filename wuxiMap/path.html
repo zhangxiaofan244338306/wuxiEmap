@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<title></title>
+		<script src="js/mui.min.js"></script>
+		<link href="css/mui.min.css" rel="stylesheet" />
+		<link href="css/path.css" rel="stylesheet" />
+		<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=WRopnGH4E03iFrqyXoDrbrGHwCoIuYeu&services=&t=20170517145936"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+		<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+		<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+		<script src="js/path.js"></script>
+
+	</head>
+
+	<body>
+
+		<!--侧滑菜单容器-->
+		<div id="offCanvasWrapper" class="mui-off-canvas-wrap mui-draggable">
+
+			<div class="mui-inner-wrap">
+				
+				<div class="pathset">
+					<div id="fis_elm__5">
+						<div class="pagebody index-widget-navebox">
+							<div id="fis_elm__6">
+								<div class="styleguide common-widget-searchnave">
+									<form class="se-dir-form">
+
+										<div class="se-wrap">
+											<div class="row">
+
+												<div class="input-point">
+													<div class="input-group start-input-group">
+														<div class="se-inner input-text -icon -ft-large">
+															<img class="icon -new-endpoint " src="pics/point.png" style="margin-top: -10px;margin-left: -3px;" />
+															<input type="text" key="start" id="se-txt-start" placeholder="地图选点" value="位置获取中..." disabled="disabled" />
+															<div class="ui-suggestion-quickdel" style="visibility: visible;"></div>
+														</div>
+													</div>
+													<div class="input-group">
+														<div class="se-inner input-text -icon -ft-large">
+															<img class="icon -new-endpoint " src="pics/point.png" style="margin-top: -10px;margin-left: -3px;" />
+															<input type="text" key="end" id="se-txt-end" placeholder="输入终点..." disabled="disabled" />
+														</div>
+													</div>
+												</div>
+												<div style="width:30px;height:30px;position: absolute;right: 30px;top: 15px;" id="clearFrom"> <img src="pics/clear.png" style="width:20px;height:20px;" /></div>
+												<div class="se-btn-search -col-auto" id="b_serarch" style="margin-top: 45px;">搜索</div>
+											</div>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div style="width: 33%;height: 33px;bottom: 0px;left: 0px;position: absolute;" align="center" id="jiache">
+							<img src="img/path/car1.png" id="carImage" class="imgSize" />
+						</div>
+						<div style="width: 33%;height: 33px;bottom: 0px;left: 33.5%;position: absolute;" align="center" id="gongjiao">
+							<img src="img/path/bush.png" id="bushImage" class="imgSize" />
+						</div>
+						<div style="width: 33%;height: 33px;bottom: 0px;right: 0px;position: absolute;" align="center" id="buxing">
+							<img src="img/path/ride.png" id="rideImage" class="imgSize" />
+						</div>
+					</div>
+				</div>
+				<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+
+					<div id="l-map"></div>
+
+				</div>
+
+				<!-- off-canvas backdrop -->
+				<div class="mui-off-canvas-backdrop"></div>
+			</div>
+		</div>
+
+		<div class="mui-scroll-wrapper" style="top: calc(100% - 160px);height: 160px; display: none;" id="resultDiv">
+			<div id="r-result"></div>
+		</div>
+		<script>
+			mui.init({
+				swipeBack: false,
+			});
+
+			var map = new BMap.Map("l-map");
+			var point = new BMap.Point(120.202538, 31.340778); // 创建点坐标  
+			map.centerAndZoom(point, 10); // 初始化地图，设置中心点坐标和地图级别
+			map.enableScrollWheelZoom(); //允许滚轮
+			map.enableDoubleClickZoom(); //允许双击放大
+
+			map.addControl(new BMap.NavigationControl());
+			map.setCurrentCity("无锡"); // 设置地图显示的城市 此项是必须设置的
+
+			document.getElementById('gongjiao').addEventListener('tap', function() {
+				map.clearOverlays(); //清除地图覆盖物   
+				pathMode = "gongjiao";
+				if($("#b_serarch").hasClass('actived')) { pathBush(); }
+				document.getElementById("carImage").src = "img/path/car.png";
+				document.getElementById("bushImage").src = "img/path/bush1.png";
+				document.getElementById("rideImage").src = "img/path/ride.png";
+			});
+			document.getElementById('jiache').addEventListener('tap', function() {
+				map.clearOverlays(); //清除地图覆盖物   
+				pathMode = "jiache";
+				if($("#b_serarch").hasClass('actived')) { pathCar(); }
+				document.getElementById("carImage").src = "img/path/car1.png";
+				document.getElementById("bushImage").src = "img/path/bush.png";
+				document.getElementById("rideImage").src = "img/path/ride.png";
+			});
+			document.getElementById('buxing').addEventListener('tap', function() {
+				map.clearOverlays(); //清除地图覆盖物   
+				$("button span").removeClass("selected");
+				if($("#b_serarch").hasClass('actived')) { pathRun(); }
+				document.getElementById("carImage").src = "img/path/car.png";
+				document.getElementById("bushImage").src = "img/path/bush.png";
+				document.getElementById("rideImage").src = "img/path/ride1.png";
+			});
+			document.getElementById('b_serarch').addEventListener('tap', function() {
+				if($("#b_serarch").hasClass('actived')) {
+					if(pathMode == "jiache") {
+						pathCar();
+					} else if(pathMode == "gongjiao") {
+						pathBush();
+					} else if(pathMode == "buxing") {
+						pathRun();
+					}
+				}
+			});
+			document.getElementById('clearFrom').addEventListener('tap', function() {
+				document.getElementById("se-txt-start").value = '';
+				document.getElementById("l-map").style.height = "calc(100% - 140px)";
+				$("#b_serarch").removeClass("actived");
+				$("#resultDiv").hide();
+				map.clearOverlays(); //清除地图覆盖物      
+			});
+
+			var geolocation = new BMap.Geolocation();
+			geolocation.getCurrentPosition(function(r) {
+				if(this.getStatus() == BMAP_STATUS_SUCCESS) {
+					var icon = new BMap.Icon('img/start.png', new BMap.Size(24, 36), {
+						anchor: new BMap.Size(10, 32),
+					});
+					var mk = new BMap.Marker(r.point, { icon: icon });
+					map.addOverlay(mk);
+					map.panTo(r.point);
+					map.setZoom(18);
+					$("#b_serarch").addClass("actived");
+					//alert('您的位置：' + r.point.lng + ',' + r.point.lat);
+					fromlon = r.point.lng;
+					fromlat = r.point.lat;
+					document.getElementById("se-txt-start").value = "当前位置";
+				} else {
+					alert('failed' + this.getStatus());
+				}
+			}, { enableHighAccuracy: true })
+
+			var geoc = new BMap.Geocoder();
+
+			//地图选点
+			function showInfo(e) {
+				map.clearOverlays(); //清除地图覆盖物      
+				var icon = new BMap.Icon('img/start.png', new BMap.Size(24, 36), {
+					anchor: new BMap.Size(10, 32),
+				});
+				var mk = new BMap.Marker(e.point, { icon: icon });
+				map.addOverlay(mk);
+				map.panTo(e.point);
+				var opts = {
+					width: 250, // 信息窗口宽度
+					height: 40, // 信息窗口高度
+				}
+
+				geoc.getLocation(e.point, function(rs) {
+					fromlon = e.point.lng;
+					fromlat = e.point.lat;
+					console.log(e.point.lng + "," + fromlat);
+					var addComp = rs.addressComponents;
+					$("#b_serarch").addClass("actived");
+					document.getElementById("se-txt-start").value = addComp.province + addComp.city + addComp.district + addComp.street + addComp.streetNumber;
+				});
+			}
+
+			map.addEventListener("click", showInfo);
+
+			initData();
+		</script>
+	</body>
+
+</html>

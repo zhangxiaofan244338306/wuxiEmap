@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>Hello MUI</title>
+		<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1,maximum-scale=1,user-scalable=no" />
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<script src="js/mui.js"></script>
+		<title></title>
+		
+		<script>
+
+mui.init();
+if(mui.os.iphone){
+   alert("当前设备是iphone");
+ }
+var width=screen.width;
+var height=screen.height;
+var a=  Math.sqrt(Math.pow(width,2)+Math.pow(height,2));
+if(mui.os.android){
+	if(a<932){
+	alert("当前设备是安卓手机")
+	}
+	else{
+		alert("当前设备是安卓平板")
+	}
+}
+ 
+  if(mui.os.ipad){
+   alert("当前设备是ipad");
+ }
+if(mui.os.stream){
+   alert("返回是否在 5+ App(包括流应用)运行");
+ }
+
+if(mui.os.stream){
+   alert("返回是否为流应用");
+   
+ }
+//检测是否为iOS或安卓系统版本是否小于4.4
+if(mui.os.ios||(mui.os.android&&parseFloat(mui.os.version)<4.4)){
+   //...
+ } 
+ if(mui.os.wechat){
+   alert("返回是否在微信中运行");
+   
+ }
+ if(mui.os.ios){
+   alert("返回是否为苹果设备");
+   
+ }
+ <!-- Begin
+document.write('分辨率为:\n' + screen.width + '*' + screen.height + ' pixels');
+ -->
+
+
+
+ </script>
+	</head>
+	<body>
+	</body>
+</html>

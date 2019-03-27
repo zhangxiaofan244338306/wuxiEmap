@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<link rel="stylesheet" href="css/mui.min.css">
+		<link rel="stylesheet" href="css/select.css">
+		<!--App自定义的css-->
+		<link rel="stylesheet" type="text/css" href="css/app.css" />
+		<link href="css/mui.picker.css" rel="stylesheet" />
+		<link href="css/mui.poppicker.css" rel="stylesheet" />
+		<style type="text/css">
+			body,
+			html {
+				width: 100%;
+				height: 100%;
+				margin: 0;
+				font-family: "微软雅黑";
+			}
+			
+			#allmap {
+				height: 100%;
+				width: 100%;
+				overflow: hidden;
+			}
+			
+			.BMapLib_SearchInfoWindow .BMapLib_sendToPhone {
+				display: none;
+			}
+			
+			img[src*="copyright_logo_hd"] {
+				display: none;
+			}
+			
+			.BMap_cpyCtrl {
+				display: none;
+			}
+			
+			p {
+				text-indent: 22px;
+			}
+			
+			span.mui-icon {
+				font-size: 14px;
+				color: #007aff;
+				margin-left: -15px;
+				padding-right: 10px;
+			}
+			
+			.mui-off-canvas-right {
+				color: #fff;
+			}
+			
+			.title {
+				margin: 35px 15px 10px;
+			}
+			
+			.title.content {
+				margin: 10px 15px 35px;
+				color: #bbb;
+				text-indent: 1em;
+				font-size: 14px;
+				line-height: 24px;
+			}
+			
+			input {
+				color: #000;
+			}
+			
+			.tangram-suggestion-main {
+				z-index: 2 !important;
+				height: calc(100% - 60px);
+				overflow: auto;
+			}
+			
+			.BMap_noprint anchorTR {
+				z-index: 2000 !important;
+			}
+			
+			.mui-off-canvas-right {
+				position: absolute;
+				z-index: -1;
+				top: 0;
+				bottom: 0;
+				visibility: hidden;
+				box-sizing: content-box;
+				width: 60%;
+				min-height: 100%;
+			}
+			
+			.mui-bar {
+				position: fixed;
+				z-index: 10;
+				right: 0;
+				left: 0;
+				height: 44px;
+				padding-right: 10px;
+				padding-left: 10px;
+				border-bottom: 0;
+				background-color: #00AEEF;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				-webkit-backloadInitface-visibility: hidden;
+				backface-visibility: hidden;
+			}
+			
+			a {
+				color: white;
+			}
+			
+			#inputDiv {
+				position: fixed;
+				z-index: 10;
+				right: 0;
+				left: 10px;
+				top: 50px;
+				height: auto;
+				width: calc(100% - 20px);
+				max-width: 394px;
+				border-bottom: 0;
+				-webkit-box-shadow: 0 0 1px rgba(0, 0, 0, .85);
+				box-shadow: 0 0 1px red;
+				-webkit-backloadInitface-visibility: hidden;
+				backface-visibility: hidden;
+				
+			}
+			#showCityPicker {
+				position: absolute;
+				top: 9px;
+				right: 8px;
+				width: 50px;
+				height: 30px;
+				z-index: 1500;
+				background-size: 50px;
+				}
+		</style>
+		<script type="text/javascript" src="js/jquery.min.1.7.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/getscript?v=2.0&ak=WRopnGH4E03iFrqyXoDrbrGHwCoIuYeu&services=&t=20170517145936"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.js"></script>
+		<link rel="stylesheet" href="http://api.map.baidu.com/library/SearchInfoWindow/1.5/src/SearchInfoWindow_min.css" />
+		<script type="text/javascript" src="http://api.map.baidu.com/library/TextIconOverlay/1.2/src/TextIconOverlay_min.js"></script>
+		<script type="text/javascript" src="http://api.map.baidu.com/library/AreaRestriction/1.2/src/AreaRestriction_min.js"></script>
+		<script type="text/javascript" src="js/MarkerClusterer_min.js"></script>
+		<script src="js/mui.min.js"></script>
+		<script src="js/jqMap.js"></script>
+		<script src="js/mui.picker.js"></script>
+		<script src="js/mui.poppicker.js"></script>
+		<script src="js/city.data.js" type="text/javascript" charset="utf-8"></script>
+		<script src="js/city.data-3.js" type="text/javascript" charset="utf-8"></script>
+		<title>wuxi</title>
+	</head>
+
+	<body onload="loadInit()">
+		<header class="mui-bar mui-bar-nav">
+			<a class="mui-action-back mui-icon mui-icon-back mui-pull-left"></a>
+
+			<h1 class="mui-title" style="color: white;">全景无锡</h1>
+			<button id='showCityPicker' class="mui-btn mui-btn-primary" type='button'>选择</button>
+		</header>
+		<div id="inputDiv">
+			<div class="mui-input-row mui-search">
+					<input type="search" class="mui-input-clear" placeholder="搜地点" id="suggestId" >
+				</div>
+		</div>
+		<div id="offCanvasContentScroll" class="mui-content mui-scroll-wrapper">
+
+			<div id="allmap"></div>
+
+		</div>
+		<script type="text/javascript">
+			var map;
+			initMap();
+			(function($, doc) {
+				$.init();
+				$.ready(function() {
+					var cityPicker = new $.PopPicker({
+						layer: 3
+					});
+					
+					cityPicker.setData(cityData3);
+					var showCityPickerButton = doc.getElementById('showCityPicker');
+					var cityResult = doc.getElementById('cityResult');
+					showCityPickerButton.addEventListener('tap', function(event) {
+
+						cityPicker.show(function(items) {
+							
+							var point = new BMap.Point(parseFloat(items[2].value.split(',')[0]),parseFloat(items[2].value.split(',')[1]));
+							map.centerAndZoom(point, 24);
+						//map.addOverlay(new BMap.Marker(point));
+						//cityResult.innerText = "你选择的城市是:" + items[0].text + " " + items[1].text;
+						//返回 false 可以阻止选择框的关闭
+						//return false;
+							});
+					}, false);
+				});
+
+			})(mui, document);
+			function plusReady() {
+				// 设置竖屏
+				plus.screen.lockOrientation('portrait');
+			}
+			if(window.plus) {
+				plusReady();
+			} else {
+				document.addEventListener("plusready", plusReady, false);
+			}
+		</script>
+	</body>
+
+</html>
